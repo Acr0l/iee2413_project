@@ -1,0 +1,42 @@
+\documentclass{style}
+\usetikzlibrary{angles, quotes, arrows.meta}
+\numberwithin{equation}{section}
+
+\begin{document}
+\graphicspath{ {./img/} }
+\renewcommand{\contentsname}{Índice de contenido}
+\renewcommand{\listfigurename}{Índice de figuras}
+\renewcommand{\listtablename}{Índice de Tablas}
+\renewcommand{\tablename}{Tabla}
+\renewcommand{\figurename}{Imagen}
+\renewcommand*{\lstlistingname}{Código}
+\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
+
+%%%%%%%%%%%%%%%%% ENCABEZADO %%%%%%%%%%%%%%%%%
+% Si se quiere eliminar, se tiene que quitar tambien las configuraciones del style.cls
+\fancyhead[L]{ % Encabezado a la izquierda
+    \begin{picture}(0,0) \put(-40,16){\includegraphics[width=15mm]{img/logo-uc-4.pdf}} \end{picture}
+    \put(8,40){\textcolor{gray}{\scriptsize{\begin{tabular}{l}
+                    ESCUELA DE INGENIERÍA                \\
+                    DEPARTAMENTO DE INGENIERÍA ELÉCTRICA \\
+                    IEE2413 - Electrónica                \\
+                \end{tabular}}}}
+}
+\rhead{}
+
+%%%%%%%%%%%%%%%%% PORTADA %%%%%%%%%%%%%%%%%
+\input{content/00_portada}
+
+%%%%%%%%%%%%%%%%% ESPACIADO %%%%%%%%%%%%%%%%%
+\setstretch{1.15}
+
+%%%%%%%%%%%%%%%%% CONTENIDO %%%%%%%%%%%%%%%%%
+\newpage
+\input{content/01_prev_research}
+\input{content/02_am_mod}
+\input{content/03_am_demod}
+\newpage
+
+% \printbibliography
+
+\end{document}
