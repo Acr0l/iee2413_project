@@ -1,1 +1,75 @@
 \section{Investigación previa}
+
+\subsection{La Transformada de Fourier Discreta}
+
+La DFT de una señal discreta $x[n]$, de longitud $N$, está definida como:
+
+\begin{equation}
+    X[k] = \sum_{n=0}^{N-1} x[n] \cdot e^{-j \frac{2\pi}{N}kn}, \quad k = 0, 1, ..., N-1
+\end{equation}
+
+El cálculo directo de esta fórmula requiere $\mathcal{O}(N^2)$ operaciones complejas.
+
+\paragraph{Idea general del algoritmo Cooley-Tukey:}
+
+El algoritmo Cooley-Tukey se basa en el paradigma \textit{divide and conquer}, y divide la DFT de tamaño $N$ (donde $N$ es potencia de dos, es decir, $N=2^m$) en dos DFTs de tamaño $N/2$:
+
+\begin{itemize}
+    \item Una que contiene los elementos en posiciones pares: $x[0], x[2], x[4], \dots$
+    \item Otra con los elementos en posiciones impares: $x[1], x[3], x[5], \dots$
+\end{itemize}
+
+Utilizando esta separación, se puede reescribir la DFT como:
+
+\begin{equation}
+    X[k] = \sum_{n=0}^{N/2 - 1} x[2n] \cdot W_N^{2kn} + \sum_{n=0}^{N/2 - 1} x[2n+1] \cdot W_N^{(2n+1)k}
+\end{equation}
+
+donde $W_N = e^{-j\frac{2\pi}{N}}$ es la raíz $N$-ésima de la unidad.
+
+Agrupando términos:
+
+\begin{equation}
+    X[k] = E[k] + W_N^k \cdot O[k]
+\end{equation}
+\begin{equation}
+    X[k + N/2] = E[k] - W_N^k \cdot O[k]
+\end{equation}
+
+donde $E[k]$ es la FFT de los elementos pares y $O[k]$ la FFT de los impares. Esta descomposición se aplica recursivamente hasta que se obtienen DFTs de tamaño 1.
+
+\paragraph{Etapas del algoritmo Radix-2:}
+
+\begin{enumerate}
+    \item \textbf{Bit-reversal:} Reordenamiento de los datos de entrada según el orden inverso de los bits del índice binario.
+    \item \textbf{Cálculo en etapas:} Se realizan $\log_2 N$ etapas, cada una combinando pares de subproblemas más pequeños usando operaciones llamadas \textit{butterflies}.
+    \item \textbf{Butterfly operation:} Para cada par $(a, b)$ y una raíz $W_N^k$, se computa:
+          \begin{equation}
+              a' = a + W_N^k \cdot b, \quad b' = a - W_N^k \cdot b
+          \end{equation}
+\end{enumerate}
+
+\paragraph{Complejidad computacional:}
+
+Gracias a esta estructura recursiva, el algoritmo tiene una complejidad de:
+\begin{equation}
+    \mathcal{O}(N \log_2 N)
+\end{equation}
+lo que representa una mejora sustancial con respecto a la DFT directa.
+
+\paragraph{Ejemplo para $N=4$:}
+
+Sea $x = [x_0, x_1, x_2, x_3]$, se procede como sigue:
+
+\begin{itemize}
+    \item FFT de pares: $E[k] = x_0 + x_2 \cdot W_2^k$
+    \item FFT de impares: $O[k] = x_1 + x_3 \cdot W_2^k$
+\end{itemize}
+
+\noindent Combinación:
+\begin{equation}
+    X[0] = E[0] + W_4^0 \cdot O[0], \quad X[1] = E[1] + W_4^1 \cdot O[1]
+\end{equation}
+\begin{equation}
+    X[2] = E[0] - W_4^0 \cdot O[0], \quad X[3] = E[1] - W_4^1 \cdot O[1]
+\end{equation}
