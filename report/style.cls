@@ -8,7 +8,7 @@
 \selectlanguage{spanish}
 
 % Tipografía y texto
-\RequirePackage{mathptmx} % Times New Roman
+\RequirePackage{newtxtext} % Times New Roman
 \RequirePackage[T1]{fontenc}
 \RequirePackage{parskip}  % Configura la separación de párrafos
 \RequirePackage{setspace} % Interlineado

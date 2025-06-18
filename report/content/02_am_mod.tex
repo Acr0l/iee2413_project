@@ -1,3 +1,44 @@
 \section{Modulación AM}
 
-landeta
+Para el circuito de la figura entregada:
+
+\begin{figure}[ht!]
+    \centering
+    \begin{tikzpicture}
+        % Paths, nodes and wires:
+        \draw (1, 5.5) to[sinusoidal voltage source, l={$V_i$}, label distance=0.02cm] (1, 3.5);
+        \draw (4, 3) to[sinusoidal voltage source, l={$V_c$}, label distance=0.02cm] (4, 1);
+        \draw (2, 6) to[american resistor, l={$R$}, label distance=0.02cm] (5, 6);
+        \draw node[op amp] at (6.19, 5.51) {};
+        \draw (5, 5.02) to[american resistor, l={$R/2$}, label distance=0.02cm] (2, 5);
+        \draw (1, 5.5) -| (2, 6);
+        \draw (2, 5.5) -| (2, 5);
+        \draw (5, 7) to[american resistor, l={$R$}, label distance=0.02cm] (7, 7);
+        \draw (5, 7) -| (5, 6);
+        \draw (7, 7) -| (7.38, 5.51);
+        \draw node[nmos] at (5, 2.98) {};
+        \draw (5, 5) -| (5, 3.75);
+        \draw (5, 2.21) -| (5, 1);
+        \draw node[sground] at (5, 1) {};
+        \draw node[sground] at (4, 1) {};
+        \draw node[sground] at (1, 3.5) {};
+        \draw (7.38, 5.51) -| (8, 5.5);
+        \draw node[ocirc] (N1) at (8, 5.5) {} node[anchor=west] at (N1.east){$V_o$};
+        \draw node[circ] (N2) at (5, 5) {} node[anchor=south east] at (N2.north west){$V_+$};
+        \draw node[circ] (N3) at (5, 6) {} node[anchor=south east] at (N3.north west){$V_-$};
+    \end{tikzpicture}
+    \caption{Circuito de Modulación AM}
+    \label{fig:am_mod_ckt}
+\end{figure}
+
+Se puede hacer un análisis según el estado del transistor, abierto y cerrado.
+
+\paragraph{Transistor abierto}
+
+Como el transistor abierto significa que no fluye corriente por $R/2$, entonces $V_+ = V_i = V_-$ (asumiendo cortocircuikto virtual).
+
+De lo anterior, como $V_-$ y $V_i$ tienen igual voltaje, no hay corriente pasando por $R$, lo que significa que $V_o$ va a ser igual a $V_i$.
+
+\paragraph{Transistor cerrado}
+
+Como el transistor cerrado significa un cortocircuito, se ve que $V_+ = 0$ (tierra) y de esta manera $V_- = 0$ y la corriente a través de $R$ es
