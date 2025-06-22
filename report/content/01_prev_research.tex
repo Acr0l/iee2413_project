@@ -10,6 +10,7 @@ La DFT de una señal discreta $x[n]$, de longitud $N$, está definida como:
 
 El cálculo directo de esta fórmula requiere $\mathcal{O}(N^2)$ operaciones complejas.
 
+\subsubsection{La Transformada de Fourier Rápida (FFT)}
 \paragraph{Idea general del algoritmo Cooley-Tukey:}
 
 El algoritmo Cooley-Tukey se basa en el paradigma \textit{divide and conquer}, y divide la DFT de tamaño $N$ (donde $N$ es potencia de dos, es decir, $N=2^m$) en dos DFTs de tamaño $N/2$:
@@ -102,3 +103,93 @@ El índice de modulación es una medida de la variación de la amplitud de la on
         \label{fig:bloques_receptor}
     \end{minipage}
 \end{figure}
+
+\subsection{Modulación AM Tono Puro}
+\subsection{Circuitos de Modulación y Demodulación AM}
+
+\subsubsection{Moduladores AM}
+Hay diversas formas de lograr una modulación AM, como el circuíto que se analizará, y tienen la característica de que la señal entrante será la envolvente de otra sinusoide. Otro ejemplo es el siguiente circuíto.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{circuitikz}[american]
+
+        \draw (0,2) to[sV, l=$V_{in}$] (0,0);
+
+        \draw (0,2) to[D*, l=D] (2,2);
+
+        \draw (2,2) -- (3,2);
+        \draw (0,0) -- (3,0);
+
+        \draw (3,2) to[L, l=L, *-*] (3,0);
+
+        \draw (3,2) -- (5,2);
+        \draw (5,2) to[C, l=C, *-*] (5,0);
+        \draw (5, 0) -- (3, 0);
+
+        \draw (5,2) to[short, -*] (6,2);
+        \draw (6,2) node[right]{$V_{AM}$};
+    \end{circuitikz}
+\end{figure}
+
+Aquí la señal entrante $V_{in}$ será la envolvente de la señal $V_{AM}$, que será la que viajará.
+
+\subsubsection{Demoduladores AM}
+
+Los circuítos demoduladores AM tienen que conseguir la información de la envolvente, por lo que un ejemplo de esto son los rectificadores, que recordando, considera los picos de la sinusoide, por lo que en nuestro contexto, lo que se recupera será la envolvente. Un ejemplo de circuíto demodulador AM es:
+
+\begin{figure}[htbp]
+    \centering
+    \begin{circuitikz}[american]
+
+        % Fuente de señal AM
+        \draw (0,0) to[sV, l=$V_{AM}$] (0,3);
+
+        % Diodo
+        \draw (0,3) to[short] (1,3)
+        to[D*, l_=D] (2,3);
+
+        % Nodo superior del RC
+        \draw (1,3) -- (3,3);
+
+        % Condensador hacia abajo
+        \draw (3,3) to[C, l_=C] (3,0);
+
+        % Resistencia hacia derecha
+        \draw (3,3) to[short] (5,3)
+        to[R, l = R] (5,0);
+
+        % Cable inferior de masa
+        \draw (0,0) -- (5,0);
+        \draw (5,3) to[short, -*] (6,3);
+        \draw (6, 3) node[right]{$V_{out}$};
+
+    \end{circuitikz}
+\end{figure}
+
+En particular, la radio galena es un ejemplo simple y económico de un demodulador AM que además, tiene la misma forma que el circuíto mostrado. En este caso, el voltaje AM es recibido por una antena y transmitido por un transformador que amplifica la señal, y la resistencia corresponde al audifono con el que escuchamos la señal de radio.
+
+\subsubsection{Espectro de frecuencia}
+
+Para entender esto, hay que recordar cómo se ve una onda con modulación AM:
+
+\begin{equation*}
+    V_{AM}=V_{in}(1+m\cos(\omega_mt))\cos(\omega_{in}t)
+\end{equation*}
+
+donde m es el indice de modulación. Dado esto, se puede encontrar una nueva expresión para esta onda:
+
+\begin{align*}
+    V_{AM} & =V_{in}\cos(\omega_{in}t)+mV_{in}\cos(\omega_mt)\cos(\omega_{in}t)                                        \\
+    V_{AM} & =V_{in}\cos(\omega_{in}t)+\frac{1}{2}mV_{in}[\cos([\omega_m+\omega_{in}]t)+\cos([\omega_m-\omega_{in}]t)]
+\end{align*}
+
+De esta manera, se pueden identificar 3 ondas, la onda portadora, que es $V_{in}\cos(\omega_{in}t)$ y las ondas de banda lateral superior e inferior, que son aquellas cuya frecuencia queda determinada por $\omega_{sup}=\omega_m+\omega_{in}$ y $\omega_{inf}=\omega_m - \omega_{in}$ respectivamente. De esta manera, se puede determinar el ancho de banda de una onda modulada, que queda determinado por $BW = \omega_{sup}-\omega_{inf} = 2\omega_m$.
+
+\subsubsection{Tecnologías actuales que usan AM}
+
+Actualmente, las tecnologías que usan AM son bastante cotidianas, y se presentan en varias formas, como en el wifi, la comunicación por cable y por satélite, las redes móviles, la radio AM o la televisión.
+
+\subsubsection{Radiofusión AM utilizada en Chile y el espectro audible}
+
+La radiodifusión AM modula sonido en la amplitud de ondas de radio, sin embargo, las radios actuales prefieren la modulación FM, pues su calidad de audio y resistencia al ruido son mayores. Las radios actuales que usan la modulación AM en chile usan un rango de frecuencias entre los 540 y los 1610KHz.
