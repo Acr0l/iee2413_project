@@ -119,7 +119,7 @@ Hay diversas formas de lograr una modulación AM, como el circuíto que se anali
 
         \draw (0,2) to[sV, l=$V_{in}$] (0,0);
 
-        \draw (0,2) to[D*, l=D] (2,2);
+        \draw (0,2) to[D, l=D] (2,2);
 
         \draw (2,2) -- (3,2);
         \draw (0,0) -- (3,0);
@@ -150,10 +150,10 @@ Los circuítos demoduladores AM tienen que conseguir la información de la envol
 
         % Diodo
         \draw (0,3) to[short] (1,3)
-        to[D*, l_=D] (2,3);
+        to[D, l_=D] (2,3);
 
         % Nodo superior del RC
-        \draw (1,3) -- (3,3);
+        \draw (2,3) -- (3,3);
 
         % Condensador hacia abajo
         \draw (3,3) to[C, l_=C] (3,0);
